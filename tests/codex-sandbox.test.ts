@@ -57,7 +57,9 @@ const found = findCodex();
 const codex = found && spawnSync(found, ['--version'], { timeout: 15_000 }).status === 0 ? found : undefined;
 describe.skipIf(!codex || process.platform !== 'darwin')("Codex's own sandbox, as Beluga sets it (the real codex binary)", () => {
   // Inside your home, so a friend reaching only shared folders is kept out of what's beside it.
-  const dir = codex ? realpathSync(mkdtempSync(path.join(os.homedir(), 'Library', 'Caches', 'beluga-codex-sandbox-'))) : '';
+  const cache = path.join(os.homedir(), 'Library', 'Caches');
+  if (codex) mkdirSync(cache, { recursive: true });
+  const dir = codex ? realpathSync(mkdtempSync(path.join(cache, 'beluga-codex-sandbox-'))) : '';
   const work = path.join(dir, 'work');
   afterAll(() => rmSync(dir, { recursive: true, force: true }));
   if (codex) {

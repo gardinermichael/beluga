@@ -377,9 +377,11 @@ More: [how it works](docs/how-it-works.md) · [security](docs/security.md) · [p
 
 ```bash
 git clone https://github.com/kayraucklnc/beluga.git && cd beluga
-npm install && npm test
+npm ci
+npm ci --prefix packages/mac # root tests and typecheck also load the Mac app's models
+npm test
 
-cd packages/mac && npm install
+cd packages/mac
 npm run app:dev            # the Mac app, running Beluga from this repo
 npm run e2e                # Playwright tests against the demo
 npm run app:build          # the .app and the designed .dmg
